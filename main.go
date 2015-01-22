@@ -3,6 +3,7 @@ package main
 import (
 	"code.google.com/p/go.net/websocket"
 	"encoding/json"
+	"fmt"
 	"github.com/codegangsta/negroni"
 	"github.com/daryl/qstn/lib/db"
 	"github.com/daryl/qstn/middle/ajaxify"
@@ -48,13 +49,18 @@ func vote(ws *websocket.Conn) {
 	conn := &sock{ws}
 	hub[conn] = 1337
 
+	fmt.Println("New Socket")
+	fmt.Println(hub)
+
 	coll := db.D.C("entries")
 
 	for {
 		err = JSON.Receive(ws, &entry)
 
 		if err != nil {
+			fmt.Println("Close Socket")
 			delete(hub, conn)
+			fmt.Println(hub)
 			return
 		}
 

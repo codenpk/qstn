@@ -27,6 +27,7 @@ Module = module.exports = !->
     @selected = if c then Number c else null
     # New socket
     @sock = new Sock
+    console.log 'New Socket: ' + new Date
     # Listen
     @sock.listen do
       @get.bind @
@@ -36,6 +37,7 @@ Module = module.exports = !->
 # ~~
 # Change selection index
 Module::change = (idx)!->
+  console.log 'Change start: ' + new Date
   m.startComputation!
   o = @entry.options
   v = o[idx].votes!
@@ -50,7 +52,9 @@ Module::change = (idx)!->
 
   o[idx].votes ++v
   m.endComputation!
+  console.log 'Change end: ' + new Date
 
+  console.log 'Sending data: ' + new Date
   @sock.send @entry
 
 
@@ -68,18 +72,22 @@ Module::perc = (obj)->
 # ~~
 # Data recieved from socket
 Module::get = (data)!->
+  console.log 'Retrieved data: ' + new Date
   m.startComputation!
   o = @entry.options
+  console.log 'Updating values: ' + new Date
   # Replace option votes
   for v, k in data.options
     o[k].votes v.votes
   m.endComputation!
+  console.log 'Updated values: ' + new Date
 
 # Unload
 # ~~
 # Before the route transitions
 # this function will be called
-Module::onunload = !->
+Module::onunload = (e)->
+  console.log 'Closed socket: ' + new Date
   # Close socket, memory
   # leaks are bad, yo!
   @sock.kill!

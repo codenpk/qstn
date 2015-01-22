@@ -1,7 +1,7 @@
 # Sock
 # ~~
 # WebSocket URL
-exports.sock = \ws://qstn.co/s
+exports.sock = "ws:#{location.host}/s"
 
 # Route
 # ~~

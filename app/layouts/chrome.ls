@@ -8,8 +8,9 @@ Module = {}
 # ~~
 # Module controller
 Module.controller = (_m)!->
-  @content = _m.view.bind do
-    @, new _m.controller
+  c = new _m.controller
+  @content = _m.view.bind @, c
+  @onunload = !-> c.onunload?!
 
 # View
 # ~~
