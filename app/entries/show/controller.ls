@@ -24,7 +24,7 @@ Module = module.exports = !->
     # Value from cookie
     c = cookie.get e.slug
     # Convert cookie value to number
-    @selected = if c then Number c else c
+    @selected = if c then Number c else null
     # New socket
     @sock = new Sock
     # Listen
@@ -49,9 +49,10 @@ Module::change = (idx)!->
   @selected = idx
 
   o[idx].votes ++v
+  m.endComputation!
+
   @sock.send @entry
 
-  m.endComputation!
 
 # Perc
 # ~~
