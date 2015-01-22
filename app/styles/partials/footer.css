@@ -1,0 +1,9 @@
+.site-footer {
+  color: #ccc;
+  font-size: 11px;
+  margin: 30px 0;
+}
+
+.site-footer a {
+  color: var(--color-light);
+}

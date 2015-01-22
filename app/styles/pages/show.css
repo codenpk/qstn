@@ -1,0 +1,71 @@
+.show .option {
+  display: flex;
+  position: relative;
+  padding: 10px 0;
+}
+
+.show .label {
+  padding: 0 0 0 8px;
+  flex: 1;
+}
+
+.show .perc,
+.show .votes {
+  font-size: 11px;
+  padding: 0 0 0 15px;
+  text-align: right;
+}
+
+.show .perc {
+  color: var(--color-light);
+  width: 48px;
+}
+
+.show .votes {
+  color: var(--color-main);
+  width: 60px;
+}
+
+.show .bar,
+.show .bar .pro {
+  height: 1px;
+}
+
+.show .bar {
+  position: absolute;
+  background: #eee;
+  right: 0; left: 0;
+  bottom: 0;
+}
+
+.show .bar .pro {
+  background-image: linear-gradient(to right, #BA68FF 0%, #006FFF 100%);
+  transition: all 0.3s cubic-bezier(.82,.29,.29,1);
+}
+
+.show .social,
+.show .social input {
+  font-size: 11px;
+}
+
+.show .social {
+  padding: 10px 0 0;
+  display: flex;
+}
+
+.show .social a {
+  color: var(--color-main);
+}
+
+.show .social p {
+  color: var(--color-light);
+  flex: 1;
+}
+
+.show .social input {
+  width: 110px;
+  height: auto;
+  color: var(--color-faint);
+  text-align: right;
+  padding: 0;
+}

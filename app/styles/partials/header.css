@@ -1,0 +1,54 @@
+.site-header {
+  margin: 0 0 20px;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 0;
+}
+
+.site-header .content {
+  display: flex;
+}
+
+.site-header .logo {
+  font-weight: bold;
+  line-height: 18px;
+  margin: 0;
+}
+
+.site-header .logo a {
+  position: relative;
+  color: black;
+}
+
+.site-header .logo a:after {
+  content: "+";
+  display: block;
+  color: var(--color-faint);
+  transition: all 0.2s ease;
+  transform: rotate(90deg);
+  position: absolute;
+  top: 3px; right: -18px;
+  opacity: 0;
+}
+
+.site-header .logo a:hover {
+  color: var(--color-main);
+  text-decoration: none;
+}
+
+.site-header .logo a:hover:after {
+  right: -14px;
+  transform: rotate(0deg);
+  opacity: 1;
+}
+
+.site-header .motto {
+  font-size: 12px;
+  font-weight: 400;
+  text-align: right;
+  color: var(--color-faint);
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0;
+  display: flex;
+  flex: 1;
+}

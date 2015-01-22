@@ -1,0 +1,13 @@
+:root {
+  --site-width: 400px;
+
+  --font-size: 13px;
+  --font-weight: 400;
+  --font-family: Aktiv Grotesk, aktriv-grotesk-std, Helvetica Neue, Helvetica;
+  --line-height: 1.4;
+
+  --color-faint: #BBB;
+  --color-light: #888;
+  --color-main:  #444;
+  --color-dark:  #000;
+}

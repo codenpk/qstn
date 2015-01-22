@@ -1,0 +1,38 @@
+.radio {
+  position: relative;
+}
+
+.radio input {
+  display: none;
+}
+
+.radio label {
+  width: 16px;
+  height: 16px;
+  background: white;
+  box-shadow: 0 0 0 1px #ddd inset;
+  border-radius: 50%;
+  display: block;
+}
+
+.radio label:after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 0 0 1px rgba(0, 0, 0, .3);
+  transition: all 0.3s ease;
+  top: 5px; left: 5px;
+  display: none;
+}
+
+.radio input:checked ~ label {
+  background-image: linear-gradient(#006FFF, #BA68FF);
+  box-shadow: none;
+}
+
+.radio input:checked ~ label:after {
+  display: block;
+}

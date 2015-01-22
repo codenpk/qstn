@@ -1,0 +1,15 @@
+@import url("globals/vars.css");
+@import url("globals/reset.css");
+
+@import url("modules/form.css");
+
+@import url("components/radio.css");
+
+@import url("partials/header.css");
+@import url("partials/footer.css");
+
+@import url("pages/error.css");
+@import url("pages/create.css");
+@import url("pages/show.css");
+
+@import url("app.css");

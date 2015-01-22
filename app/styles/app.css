@@ -1,0 +1,51 @@
+html {
+  font-size:   var(--font-size);
+  font-weight: var(--font-weight);
+  font-family: var(--font-family);
+  line-height: var(--line-height);
+  color: var(--color-main);
+}
+
+html,
+html /deep/ * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3,
+h4, h5, h6 {
+  font-weight: 500;
+}
+
+h1 {
+  font-size: 18px;
+}
+
+a, a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+strong {
+  font-weight: bold;
+}
+
+[loading] {
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.content {
+  width: 450px;
+  margin: auto;
+}
+
+@media (max-width: 500px) {
+  .content {
+    width: 100%;
+    padding: 0 20px;
+  }
+}

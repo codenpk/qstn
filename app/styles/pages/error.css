@@ -1,0 +1,19 @@
+.error {
+  position: absolute;
+  top: 0; right: 0;
+  bottom: 0; left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error a {
+  font-size: 44px;
+  color: var(--color-light);
+  font-weight: 300;
+}
+
+.error a:hover {
+  color: var(--color-main);
+  text-decoration: none;
+}
