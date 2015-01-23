@@ -3,6 +3,7 @@ package main
 import (
 	"code.google.com/p/go.net/websocket"
 	"encoding/json"
+	"fmt"
 	"github.com/codegangsta/negroni"
 	"github.com/daryl/qstn/lib/db"
 	"github.com/daryl/qstn/middle/ajaxify"
@@ -29,7 +30,7 @@ func main() {
 	neg.Use(ajaxify.New(index))
 
 	mux.HandleFunc("/", index)
-	mux.Handle("/s", websocket.Handler(socket))
+	mux.Handle("/s/", websocket.Handler(socket))
 	mux.HandleFunc("/q/", handleQ)
 
 	bytz, _ = ioutil.ReadFile("./public/index.html")

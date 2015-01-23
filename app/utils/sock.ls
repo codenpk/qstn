@@ -7,8 +7,10 @@ require! {
 # New
 Sock = module.exports = !->
   @fnc = []
+  id = location.pathname / \/
+  console.log id
   @s = new WebSocket do
-    config.sock
+    "ws:#{location.host}/s/#{id[2]}"
   @bind!
 
 # Bind
