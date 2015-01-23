@@ -7,10 +7,13 @@ require! {
 # New
 Sock = module.exports = !->
   @fnc = []
-  id = location.pathname / \/
-  @s = new WebSocket do
-    "ws:#{location.host}/s/#{id[2]}"
-  @bind!
+  setTimeout (->
+    # It's a race, yo
+    id = location.pathname / \/
+    @s = new WebSocket do
+      "ws:#{location.host}/s/#{id[2]}"
+    @bind!
+  ).bind(@), 0
 
 # Bind
 # ~~
