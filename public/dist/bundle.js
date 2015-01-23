@@ -434,6 +434,7 @@ Sock = module.exports = function(){
 Sock.prototype.bind = function(){
   this.s.onmessage = function(e){
     var d, i$, ref$, len$, v, results$ = [];
+    console.log(e.data);
     if (e.data === 'PING') {
       return;
     }

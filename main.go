@@ -3,7 +3,6 @@ package main
 import (
 	"code.google.com/p/go.net/websocket"
 	"encoding/json"
-	"fmt"
 	"github.com/codegangsta/negroni"
 	"github.com/daryl/qstn/lib/db"
 	"github.com/daryl/qstn/middle/ajaxify"
