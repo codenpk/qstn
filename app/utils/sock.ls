@@ -16,6 +16,7 @@ Sock = module.exports = !->
 # Bind events
 Sock::bind = !->
   @s.onmessage = ((e)->
+    return if e.data == \PING
     d = JSON.parse e.data
     for v in @fnc then v d
   ).bind @

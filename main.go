@@ -3,7 +3,6 @@ package main
 import (
 	"code.google.com/p/go.net/websocket"
 	"encoding/json"
-	"fmt"
 	"github.com/codegangsta/negroni"
 	"github.com/daryl/qstn/lib/db"
 	"github.com/daryl/qstn/middle/ajaxify"
@@ -13,12 +12,12 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"time"
 )
 
 var (
 	bytz []byte
-	JSON = websocket.JSON
-	hub  = map[*sock]int{}
+	hubs = map[string]*Hub{}
 )
 
 func main() {
@@ -30,9 +29,8 @@ func main() {
 	neg.Use(ajaxify.New(index))
 
 	mux.HandleFunc("/", index)
+	mux.Handle("/s", websocket.Handler(socket))
 	mux.HandleFunc("/q/", handleQ)
-
-	mux.Handle("/s", websocket.Handler(vote))
 
 	bytz, _ = ioutil.ReadFile("./public/index.html")
 
@@ -40,29 +38,41 @@ func main() {
 	neg.Run(":" + por)
 }
 
-func vote(ws *websocket.Conn) {
-	defer ws.Close()
-
+func socket(ws *websocket.Conn) {
 	var err error
+	var raw []byte
 	var entry *Entry
 
-	conn := &sock{ws}
-	hub[conn] = 1337
+	// Use the URL path as id
+	id := ws.Request().URL.Path
 
-	fmt.Println("New Socket")
-	fmt.Println(hub)
+	// Create hub if not exist
+	if _, ok := hubs[id]; !ok {
+		hubs[id] = NewHub()
+	}
+
+	hub := hubs[id]
+	cli := hub.Add(ws)
 
 	coll := db.D.C("entries")
 
+	// Keep Heroku websockets alive by
+	// pinging the client every 30 secs
+	go cli.Ping(30 * time.Second)
+
+	defer func() {
+		hub.Remove(ws)
+		garbage(id)
+	}()
+
 	for {
-		err = JSON.Receive(ws, &entry)
+		err = Message.Receive(ws, &raw)
 
 		if err != nil {
-			fmt.Println("Close Socket")
-			delete(hub, conn)
-			fmt.Println(hub)
 			return
 		}
+
+		err = json.Unmarshal(raw, &entry)
 
 		opts := bson.M{
 			"options": entry.Options,
@@ -74,9 +84,10 @@ func vote(ws *websocket.Conn) {
 			"$set": opts,
 		})
 
-		for c, _ := range hub {
-			JSON.Send(c.ws, entry)
+		for cws, _ := range hub.clients {
+			JSON.Send(cws, entry)
 		}
+
 	}
 }
 
@@ -141,4 +152,10 @@ func qPost(w http.ResponseWriter, r *http.Request) {
 	coll.Insert(entry)
 
 	utils.JSON(w, entry)
+}
+
+func garbage(id string) {
+	if len(hubs[id].clients) == 0 {
+		delete(hubs, id)
+	}
 }

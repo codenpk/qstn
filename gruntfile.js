@@ -78,8 +78,8 @@ module.exports = function(grunt) {
   ])
 
   grunt.registerTask("scripts", [
-    "browserify",
-    "uglify"
+    "browserify"
+    //"uglify"
   ])
 
   grunt.registerTask("default", [

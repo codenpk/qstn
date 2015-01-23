@@ -14,21 +14,13 @@ require! {
 # Module controller
 Module = module.exports = !->
   id = m.route.param \id
-  # Resolve the entry first
   EntryS.get id .then ((e)->
     if !e then return error.four!
-    # Update title
     app.title e.question
-    # New Entry instance
     @entry = new EntryM e
-    # Value from cookie
     c = cookie.get e.slug
-    # Convert cookie value to number
     @selected = if c then Number c else null
-    # New socket
     @sock = new Sock
-    console.log 'New Socket: ' + new Date
-    # Listen
     @sock.listen do
       @get.bind @
   ).bind @
@@ -37,24 +29,15 @@ Module = module.exports = !->
 # ~~
 # Change selection index
 Module::change = (idx)!->
-  console.log 'Change start: ' + new Date
   m.startComputation!
   o = @entry.options
   v = o[idx].votes!
-
   if @selected != null
     s = o[@selected].votes!
     o[@selected].votes --s
-
-  cookie.set @entry.slug, idx
-
   @selected = idx
-
   o[idx].votes ++v
   m.endComputation!
-  console.log 'Change end: ' + new Date
-
-  console.log 'Sending data: ' + new Date
   @sock.send @entry
 
 
@@ -72,22 +55,18 @@ Module::perc = (obj)->
 # ~~
 # Data recieved from socket
 Module::get = (data)!->
-  console.log 'Retrieved data: ' + new Date
+  # Set cookie
+  cookie.set @entry.slug, @selected
   m.startComputation!
   o = @entry.options
-  console.log 'Updating values: ' + new Date
   # Replace option votes
   for v, k in data.options
     o[k].votes v.votes
   m.endComputation!
-  console.log 'Updated values: ' + new Date
 
 # Unload
 # ~~
 # Before the route transitions
 # this function will be called
 Module::onunload = (e)->
-  console.log 'Closed socket: ' + new Date
-  # Close socket, memory
-  # leaks are bad, yo!
-  @sock.kill!
+  @sock?.kill!
