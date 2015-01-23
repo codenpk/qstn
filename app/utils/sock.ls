@@ -8,7 +8,6 @@ require! {
 Sock = module.exports = !->
   @fnc = []
   id = location.pathname / \/
-  console.log id
   @s = new WebSocket do
     "ws:#{location.host}/s/#{id[2]}"
   @bind!
@@ -18,7 +17,6 @@ Sock = module.exports = !->
 # Bind events
 Sock::bind = !->
   @s.onmessage = ((e)->
-    console.log e.data
     return if e.data == \PING
     d = JSON.parse e.data
     for v in @fnc then v d

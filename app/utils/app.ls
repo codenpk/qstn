@@ -1,6 +1,5 @@
 require! {
-  \mithril            : m
-  \../errors/index.ls : errors
+  \mithril : m
 }
 
 # Title
