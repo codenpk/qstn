@@ -14,6 +14,8 @@
     "grunt-myth": "^1.0.0",
     "liveify": "^2.0.0",
     "load-grunt-tasks": "^2.0.0",
-    "mithril": "^0.1.28"
+    "lodash": "^3.0.0",
+    "mithril": "^0.1.28",
+    "page": "^1.6.0"
   }
 }

@@ -1,23 +1,23 @@
-require! {
-  \mithril               : m
-  \./model.ls            : Model
-  \../../utils/sock.ls   : Sock
-  \../../stores/entry.ls : EntryS
-  \../../models/entry.ls : EntryM
-  \../../utils/cookie.ls : cookie
-  \../../utils/error.ls  : error
-  \../../utils/app.ls    : app
-}
+'use strict'
+
+require! \mithril : m
+
+require! \./Model.ls
+require! \../../utils/Sock.ls
+require! \../../stores/EntryStore.ls
+require! \../../models/EntryModel.ls
+require! \../../utils/cookie.ls
+require! \../../utils/error.ls
+require! \../../utils/app.ls
 
 # Controller
 # ~~
 # Module controller
-Module = module.exports = !->
-  id = m.route.param \id
-  EntryS.get id .then ((e)->
+Module = module.exports = (ctx) !->
+  EntryStore.get ctx.params.id .then ((e)->
     if !e then return error.four!
     app.title e.question
-    @entry = new EntryM e
+    @entry = new EntryModel e
     c = cookie.get e.slug
     @selected = if c then Number c else null
     @sock = new Sock

@@ -1,7 +1,3 @@
-require! {
-  \../config.ls : config
-}
-
 # Sharer
 # ~~
 # Facebook sharer popup

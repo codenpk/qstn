@@ -28,9 +28,8 @@ func init() {
 	}
 
 	D = S.DB(os.Getenv("MONGODB_NAME"))
-	e := D.C("entries")
 
-	e.EnsureIndex(mgo.Index{
+	D.C("entries").EnsureIndex(mgo.Index{
 		Key:        []string{"slug"},
 		Unique:     true,
 		DropDups:   true,

@@ -1,8 +1,7 @@
 # Model
 # ~~
-# Module model
 module.exports = {
-  +froze
+  -ready
   entry:
     question: ''
     options:

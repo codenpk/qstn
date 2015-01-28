@@ -1,10 +1,9 @@
-require! {
-  \mithril : m
-}
+'use strict'
+
+require! \mithril : m
 
 # View
 # ~~
-# Module view
 module.exports = (ctrl)->
   m \.error,
     m \a,

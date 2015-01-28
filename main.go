@@ -16,14 +16,13 @@ import (
 )
 
 var (
-	bytz []byte
+	html []byte
 	hubs = map[string]*Hub{}
 )
 
 func main() {
 	neg := negroni.New()
 	mux := http.NewServeMux()
-	por := os.Getenv("PORT")
 
 	neg.Use(static.New("./public"))
 	neg.Use(ajaxify.New(index))
@@ -32,10 +31,10 @@ func main() {
 	mux.Handle("/s/", websocket.Handler(socket))
 	mux.HandleFunc("/q/", handleQ)
 
-	bytz, _ = ioutil.ReadFile("./public/index.html")
+	html, _ = ioutil.ReadFile("./public/index.html")
 
 	neg.UseHandler(mux)
-	neg.Run(":" + por)
+	neg.Run(":" + os.Getenv("PORT"))
 }
 
 func socket(ws *websocket.Conn) {
@@ -57,8 +56,8 @@ func socket(ws *websocket.Conn) {
 	coll := db.D.C("entries")
 
 	// Keep Heroku websockets alive by
-	// pinging the client every 30 secs
-	go cli.Ping(30 * time.Second)
+	// pinging the client every 40 secs
+	go cli.Ping(40 * time.Second)
 
 	defer func() {
 		hub.Remove(ws)
@@ -92,7 +91,7 @@ func socket(ws *websocket.Conn) {
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
-	w.Write(bytz)
+	w.Write(html)
 }
 
 func handleQ(w http.ResponseWriter, r *http.Request) {

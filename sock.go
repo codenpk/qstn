@@ -39,16 +39,12 @@ func (c *Client) Ping(d time.Duration) {
 
 func (h *Hub) Add(ws *websocket.Conn) *Client {
 	h.clients[ws] = &Client{ws, make(chan struct{})}
-
 	return h.clients[ws]
 }
 
 func (h *Hub) Remove(ws *websocket.Conn) {
 	cli := h.clients[ws]
-
 	close(cli.ping)
-
 	delete(h.clients, ws)
-
 	ws.Close()
 }

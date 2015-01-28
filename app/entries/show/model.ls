@@ -1,6 +1,3 @@
 # Model
 # ~~
-# Module model
-module.exports = {
-
-}
+module.exports = {}

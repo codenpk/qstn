@@ -1,19 +1,20 @@
-require! {
-  \mithril               : m
-  \./model.ls            : Model
-  \../../stores/entry.ls : EntryS
-  \../../models/entry.ls : EntryM
-  \../../utils/app.ls    : app
-}
+'use strict'
+
+require! \mithril : m
+require! \page    : Page
+
+require! \./Model.ls
+require! \../../stores/EntryStore.ls
+require! \../../models/EntryModel.ls
+require! \../../utils/app.ls
 
 # Controller
 # ~~
-# Module controller
 Module = module.exports = !->
   app.title 'Create and share \
   polls and get live results'
-  @froze = Model.froze
-  @entry = new EntryM do
+  @ready = Model.ready
+  @entry = new EntryModel do
     Model.entry
 
 # Filled
@@ -24,23 +25,35 @@ Module::filled = ->
   n = 0
   l = @entry.options.length
   for v, k in @entry.options
-    n++ if v.option!.trim! != ''
+    n++ if /\S/.test v.option!
   n
 
-# Frozen
+# Question Change
+# ~~
+# Change the question value
+Module::questionChange = (e) !->
+  @entry.question e.target.textContent
+
+# Option Change
+# ~~
+# Change an option's value
+Module::optionChange = (item, e) !->
+  item.option e.target.textContent
+
+# ready
 # ~~
 # If the question isn't empty
 # and the @filled count is at
 # least 2 we can submit
-Module::frozen = !->
-  @froze = @entry.question!.trim! == '' or @filled! < 2
+Module::isReady = !->
+  @ready = /\S/.test(@entry.question!) && @filled! > 1
 
 # Watch
 # ~~
 # Watches the inputs onkeyup
 # and determines whether an option
 # needs to be pushed or popped
-Module::watch = (item)!->
+Module::watch = (item) !->
   n = @filled!
   l = @entry.options.length
 
@@ -50,18 +63,17 @@ Module::watch = (item)!->
   | n == l
     @entry.push!
 
-  @frozen.call @
+  @isReady!
 
-
-# Ship
+# Send
 # ~~
 # Sends a POST request to /q and
 # redirect to the new entry
-Module::ship = (e)!->
+Module::send = (e)!->
   e.preventDefault()
   # Clone and pop @entry
   copy = {[k,v] for k,v of @entry}
   copy.options.pop!
   # Submit @entry
-  EntryS.post copy .then (res)!->
-    m.route "/q/#{res.slug}"
+  EntryStore.post copy .then (res) !->
+    Page "/q/#{res.slug}"

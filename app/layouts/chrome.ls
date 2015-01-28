@@ -1,34 +1,23 @@
-require! {
-  \mithril : m
-}
+'use strict'
 
-Module = {}
-
-# Controller
-# ~~
-# Module controller
-Module.controller = (_m)!->
-  c = new _m.controller
-  @content = _m.view.bind @, c
-  @onunload = !-> c.onunload?!
+require! \mithril : m
+require! \../components/Link.ls
 
 # View
 # ~~
-# Module view
-Module.view = (ctrl)->
+module.exports = (ctrl, body)->
   m \div,
     m \header.site-header,
       m \.content,
         m \h1.logo,
-          m \a,
-            * config: m.route
-              href: \/
-            \qstn
+          Link do
+            href: \/
+            \qstz
         m \h5.motto,
           'Create and share polls \
            and get live results'
     m \main.site-main,
-      m \.content, ctrl.content!
+      m \.content, body
     m \footer.site-footer,
       m \.content,
         m \span,
@@ -36,8 +25,3 @@ Module.view = (ctrl)->
           m \a,
             * href: \//github.com/daryl/qstn
             \source
-
-module.exports = (_m)->
-  controller: ->
-    new Module.controller _m
-  view: Module.view

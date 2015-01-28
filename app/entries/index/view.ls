@@ -1,30 +1,36 @@
-require! {
-  \mithril : m
-}
+'use strict'
+
+require! \mithril : m
+require! \../../components/CEditable.ls
+require! \../../layouts/Chrome.ls
 
 # View
 # ~~
-# Module view
 module.exports = (ctrl)->
-  m \form.create,
-    onsubmit: ctrl.ship.bind ctrl
-    m \.input.large,
-      contenteditable: true
-      placeholder: 'What would you like to ask?'
-      oninput: (e)!-> ctrl.entry.question do
-        e.target.innerText
-      onkeyup: ctrl.frozen.bind ctrl
-      ctrl.entry.question!
-    m \.options,
-      ctrl.entry.options.map (v, i) ->
-        m \.input.option,
-          key: i
-          contenteditable: true
-          placeholder: "Option #{i+1}"
-          oninput: (e)!-> v.option do
-            e.target.innerText
-          onkeyup: ctrl.watch.bind ctrl, v
-          v.option!
-    m \button,
-      disabled: ctrl.froze
-      \Ask
+  options = []
+  entry   = ctrl.entry
+
+  for val, idx in entry.options
+    options.push CEditable do
+      key: idx
+      placeholder: "Option #{idx+1}"
+      oninput: ctrl.optionChange.bind ctrl, val
+      onkeyup: ctrl.watch.bind ctrl, val
+      class: \option
+      val.option!
+
+  Chrome {},
+    m \form.create,
+      onsubmit: ctrl.send.bind ctrl
+      CEditable do
+        placeholder: 'What would you like to ask?'
+        class: 'input large'
+        oninput: ctrl.questionChange.bind ctrl
+        onkeyup: ctrl.isReady.bind ctrl
+        entry.question!
+      m \.options,
+        options
+      m \button,
+        disabled: !ctrl.ready
+        \Ask
+

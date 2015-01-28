@@ -1,6 +1,6 @@
-require! {
-  \mithril : m
-}
+'use strict'
+
+require! \mithril : m
 
 # Config
 # ~~

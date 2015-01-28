@@ -1,7 +1,7 @@
-require! {
-  \mithril            : m
-  \../errors/index.ls : errors
-}
+'use strict'
+
+require! \mithril : m
+require! \../errors/index.ls : errors
 
 # Four
 # ~~

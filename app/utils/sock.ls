@@ -1,6 +1,4 @@
-require! {
-  \../config.ls : config
-}
+'use strict'
 
 # Sock
 # ~~
